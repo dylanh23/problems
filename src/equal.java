@@ -1,4 +1,3 @@
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -7,7 +6,7 @@ import java.util.Scanner;
 /**
  * Created by D on 12/8/2016.
  */
-public class m {
+public class equal {
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
     int tc = Integer.parseInt(sc.nextLine());
@@ -146,5 +145,4 @@ public class m {
     Arrays.sort(tempD);
     return tempD;
   }
-
 }
