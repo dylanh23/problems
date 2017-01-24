@@ -3,7 +3,7 @@ import java.util.Scanner;
 /**
  * Created by D on 1/9/2017.
  */
-public class m {
+public class newYearsChaos {
   public static void main(String[] args) {
     Scanner sc = new Scanner(System.in);
     int tc = Integer.parseInt(sc.nextLine());
@@ -37,27 +37,6 @@ public class m {
                 done = false;
                 swapCounter += 1;
                 break;
-              }
-            }
-          }
-
-          if (done) {
-            for (int j = 0; j < size; j++) {
-              if (arrayInt[j] != j + 1) {
-                if (arrayInt[j] == j + 3 && arrayInt[j + 2] == j + 1 && arrayInt[j + 1] == j + 2) {
-                  arrayInt[j + 2] = j + 3;
-                  arrayInt[j] = j + 1;
-                  swapCounter += 3;
-                  break;
-                } else if (arrayInt[j] == j + 3 && arrayInt[j + 2] == j + 1 && arrayInt[j + 1] == j + 4 && arrayInt[j + 3] == j + 2) {
-                  arrayInt[j] = j + 1;
-                  arrayInt[j + 1] = j + 2;
-                  arrayInt[j + 2] = j + 3;
-                  arrayInt[j + 3] = j + 4;
-                  swapCounter += 4;
-                  done = false;
-                  break;
-                }
               }
             }
           }
