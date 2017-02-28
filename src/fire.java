@@ -35,9 +35,9 @@ public class fire {
       fire = new int[c][r];
       String[][] input = new String[c][r];
       for (int y = 0; y < r; y++) {
-        String[] i = sc.nextLine().split("");
+        String[] i = sc.nextLine().replaceAll("\\s", "").split("");
         for (int x = 0; x < c; x++) {
-          input[x][y] = i[x + 1];
+          input[x][y] = i[x];
         }
       }
       ArrayList<Point> fireSpots = new ArrayList<>();
@@ -71,28 +71,32 @@ public class fire {
         }
       }
       distances[startX][startY] = 0;
+      Queue queue = new LinkedList();
       for (Point p : fireSpots) {
         fire[p.x][p.y] = 0;
-        fireBfs(grid[p.x][p.y]);
-        for (int y = 0; y < r; y++) {
-          for (int x = 0; x < c; x++) {
-            grid[x][y].visited = false;
-          }
+        queue.add(grid[p.x][p.y]);
+        grid[p.x][p.y].visited = true;
+      }
+      fireBfs(queue);
+      for (int y = 0; y < r; y++) {
+        for (int x = 0; x < c; x++) {
+          grid[x][y].visited = false;
         }
       }
-      int answer = bfs(grid[startX][startY]);
-      if (answer == -1) {
-        System.out.println("IMPOSSIBLE");
+      if (grid[startX][startY].x == 0 || grid[startX][startY].x == c - 1 || grid[startX][startY].y == 0 || grid[startX][startY].y == r - 1) {
+        System.out.println(1);
       } else {
-        System.out.println(answer);
+        int answer = bfs(grid[startX][startY]);
+        if (answer == -1) {
+          System.out.println("IMPOSSIBLE");
+        } else {
+          System.out.println(answer);
+        }
       }
     }
   }
 
-  private static void fireBfs(Node rootNode) {
-    Queue queue = new LinkedList();
-    queue.add(rootNode);
-    rootNode.visited = true;
+  private static void fireBfs(Queue queue) {
     while (!queue.isEmpty()) {
       Node node = (Node) queue.remove();
       for (Node n : node.childrenNodes) {
@@ -130,12 +134,12 @@ public class fire {
       Node node = (Node) queue.remove();
       for (Node n : node.childrenNodes) {
         if (!n.visited) {
-          if (n.x == 0 || n.x == c - 1 || n.y == 0 || n.y == r - 1) {
-            return distances[node.x][node.y] + 2;
-          }
           n.visited = true;
-          distances[n.x][n.y] = distances[node.x][node.y] + 1;
-          if (fire[n.x][n.y] > distances[node.x][node.y] + 1) {
+          if (fire[n.x][n.y] == -1 || fire[n.x][n.y] > distances[node.x][node.y] + 1) {
+            if (n.x == 0 || n.x == c - 1 || n.y == 0 || n.y == r - 1) {
+              return distances[node.x][node.y] + 2;
+            }
+            distances[n.x][n.y] = distances[node.x][node.y] + 1;
             queue.add(n);
           }
         }
