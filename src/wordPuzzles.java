@@ -6,16 +6,15 @@ import java.util.*;
 public class wordPuzzles {
 
   /***
-   Trie:
-   O(8 * 1000 * 1000 * 1000 (length of text: 8 directions, 1000000 starting spots, 1000 max length from one spot) +
-   1000 * 1000 (total number of char in words) +
-   1000 (total number of occurrences of words in text))
-   O(9m)
-
-   Heap:
-   add/remove O(log(1000))
-   contains O(1000)
-   O(1000)
+   * Trie:
+   * O(8 * 1000 * 1000 (length of text: 8 directions, 1000000 starting spots, 1000 max length from one spot) +
+   * 1000 * 1000 (total number of char in words) +
+   * 1000 (total number of occurrences of words in text))
+   * O(8m)
+   * <p>
+   * Heap:
+   * add/remove O(log(1000))
+   * O(log(1000))
    **/
 
   public static void main(String[] args) {
@@ -50,7 +49,7 @@ public class wordPuzzles {
         for (int j = 0; j < w; j++) {
           node = ahoCorasick.transition(node, board[j][k]);
           if (nodes[node].leaf) {
-            if (!results.contains(new Result(j, k, 'G', nodes[node].index)))
+//            if (!results.contains(new Result(j, k, 'G', nodes[node].index)))
               results.add(new Result(j, k, 'G', nodes[node].index));
           }
         }
@@ -59,7 +58,7 @@ public class wordPuzzles {
         for (int j = w - 1; j >= 0; j--) {
           node = ahoCorasick.transition(node, board[j][k]);
           if (nodes[node].leaf) {
-            if (!results.contains(new Result(j, k, 'C', nodes[node].index)))
+//            if (!results.contains(new Result(j, k, 'C', nodes[node].index)))
               results.add(new Result(j, k, 'C', nodes[node].index));
           }
         }
@@ -70,7 +69,7 @@ public class wordPuzzles {
         for (int k = 0; k < h; k++) {
           node = ahoCorasick.transition(node, board[j][k]);
           if (nodes[node].leaf) {
-            if (!results.contains(new Result(j, k, 'A', nodes[node].index)))
+//            if (!results.contains(new Result(j, k, 'A', nodes[node].index)))
               results.add(new Result(j, k, 'A', nodes[node].index));
           }
         }
@@ -79,64 +78,120 @@ public class wordPuzzles {
         for (int k = h - 1; k >= 0; k--) {
           node = ahoCorasick.transition(node, board[j][k]);
           if (nodes[node].leaf) {
-            if (!results.contains(new Result(j, k, 'E', nodes[node].index)))
+//            if (!results.contains(new Result(j, k, 'E', nodes[node].index)))
               results.add(new Result(j, k, 'E', nodes[node].index));
           }
         }
       }
+//      for (int J = 0; J < w; J++) {
+//        for (int K = 0; K < h; K++) {
+//          int node = 0;
+//          int j = J;
+//          int k = K;
+//          //up-left
+//          while (j < w && k < h) {
+//            node = ahoCorasick.transition(node, board[j][k]);
+//            if (nodes[node].leaf) {
+//              if (!results.contains(new Result(j, k, 'H', nodes[node].index)))
+//                results.add(new Result(j, k, 'H', nodes[node].index));
+//            }
+//            j++;
+//            k++;
+//          }
+//          j = J;
+//          k = K;
+//          //down-left
+//          while (j < w && k >= 0) {
+//            node = ahoCorasick.transition(node, board[j][k]);
+//            if (nodes[node].leaf) {
+//              if (!results.contains(new Result(j, k, 'F', nodes[node].index)))
+//                results.add(new Result(j, k, 'F', nodes[node].index));
+//            }
+//            j++;
+//            k--;
+//          }
+//          j = J;
+//          k = K;
+//          //down-right
+//          while (j >= 0 && k >= 0) {
+//            node = ahoCorasick.transition(node, board[j][k]);
+//            if (nodes[node].leaf) {
+//              if (!results.contains(new Result(j, k, 'D', nodes[node].index)))
+//                results.add(new Result(j, k, 'D', nodes[node].index));
+//            }
+//            j--;
+//            k--;
+//          }
+//          j = J;
+//          k = K;
+//          //up-right
+//          while (j >= 0 && k < h) {
+//            node = ahoCorasick.transition(node, board[j][k]);
+//            if (nodes[node].leaf) {
+//              if (!results.contains(new Result(j, k, 'B', nodes[node].index)))
+//                results.add(new Result(j, k, 'B', nodes[node].index));
+//            }
+//            j--;
+//            k++;
+//          }
+//        }
+//      }
+
       for (int J = 0; J < w; J++) {
-        for (int K = 0; K < h; K++) {
-          int node = 0;
-          int j = J;
-          int k = K;
-          //up-left
-          while (j < w && k < h) {
-            node = ahoCorasick.transition(node, board[j][k]);
-            if (nodes[node].leaf) {
-              if (!results.contains(new Result(j, k, 'H', nodes[node].index)))
-                results.add(new Result(j, k, 'H', nodes[node].index));
-            }
-            j++;
-            k++;
+        int j = J;
+        int k = 0;
+        int node = 0;
+        //up-left
+        while (j < w && k < h) {
+          node = ahoCorasick.transition(node, board[j][k]);
+          if (nodes[node].leaf) {
+//            if (!results.contains(new Result(j, k, 'H', nodes[node].index)))
+              results.add(new Result(j, k, 'H', nodes[node].index));
           }
-          j = J;
-          k = K;
-          //down-left
-          while (j < w && k >= 0) {
-            node = ahoCorasick.transition(node, board[j][k]);
-            if (nodes[node].leaf) {
-              if (!results.contains(new Result(j, k, 'F', nodes[node].index)))
-                results.add(new Result(j, k, 'F', nodes[node].index));
-            }
-            j++;
-            k--;
+          j++;
+          k++;
+        }
+        j = J;
+        k = 0;
+        node = 0;
+        //up-right
+        while (j >= 0 && k < h) {
+          node = ahoCorasick.transition(node, board[j][k]);
+          if (nodes[node].leaf) {
+//            if (!results.contains(new Result(j, k, 'B', nodes[node].index)))
+              results.add(new Result(j, k, 'B', nodes[node].index));
           }
-          j = J;
-          k = K;
-          //down-right
-          while (j >= 0 && k >= 0) {
-            node = ahoCorasick.transition(node, board[j][k]);
-            if (nodes[node].leaf) {
-              if (!results.contains(new Result(j, k, 'D', nodes[node].index)))
-                results.add(new Result(j, k, 'D', nodes[node].index));
-            }
-            j--;
-            k--;
+          j--;
+          k++;
+        }
+        j = J;
+        k = h - 1;
+        node = 0;
+        //down-left
+        while (j < w && k >= 0) {
+          node = ahoCorasick.transition(node, board[j][k]);
+          if (nodes[node].leaf) {
+//            if (!results.contains(new Result(j, k, 'F', nodes[node].index)))
+              results.add(new Result(j, k, 'F', nodes[node].index));
           }
-          j = J;
-          k = K;
-          //up-right
-          while (j >= 0 && k < h) {
-            node = ahoCorasick.transition(node, board[j][k]);
-            if (nodes[node].leaf) {
-              if (!results.contains(new Result(j, k, 'B', nodes[node].index)))
-                results.add(new Result(j, k, 'B', nodes[node].index));
-            }
-            j--;
-            k++;
+          j++;
+          k--;
+        }
+        j = J;
+        k = h - 1;
+        node = 0;
+        //down-right
+        while (j >= 0 && k >= 0) {
+          node = ahoCorasick.transition(node, board[j][k]);
+          if (nodes[node].leaf) {
+//            if (!results.contains(new Result(j, k, 'D', nodes[node].index)))
+              results.add(new Result(j, k, 'D', nodes[node].index));
           }
+          j--;
+          k--;
         }
       }
+
 //      Iterator<Result> iter = results.iterator();
 //      while (iter.hasNext()) {
 //        Result current = iter.next();
@@ -153,6 +208,7 @@ public class wordPuzzles {
   static class Result {
     int j, k, i;
     char d;
+
     Result(int j, int k, char d, int i) {
       this.j = j;
       this.k = k;
@@ -161,8 +217,7 @@ public class wordPuzzles {
     }
 
     @Override
-    public boolean equals(Object object)
-    {
+    public boolean equals(Object object) {
       if (!(object instanceof Result))
         return false;
       Result result2 = (Result) object;
