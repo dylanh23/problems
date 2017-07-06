@@ -1,121 +1,88 @@
+import java.awt.*;
+import java.lang.reflect.Array;
+import java.time.temporal.Temporal;
 import java.util.*;
+import java.util.List;
 
 /**
  * Created by dhare on 6/1/2017.
  */
 public class test {
-    static public class Solution {
-        int MOD = 1000000;
-        List<String> wordDict;
-        String s;
-
-//        public boolean wordBreak(String s, List<String> wordDict) {
-//            this.wordDict = wordDict;
-//            this.s = s;
-//            int sHash = getHash(s);
-//            int[] hashes = new int[wordDict.size()];
-//            for (int i = 0; i < hashes.length; i++) {
-//                hashes[i] = getHash(wordDict.get(i));
-//            }
-//        }
-//
-//        boolean dp(int p, ArrayList<Integer> ints) {
-//            if (p == wordDict.size()) {
-//                //TODO: get hash based on position
-//                int hash = ints.get(0);
-//                int length =
-//                for (int i = 0; i <)
-//                if () {
-//                    return true;
-//                } else {
-//                    return false;
-//                }
-//            } else {
-//                for (int i = 0; i <= ints.size(); i++) {
-//                    ArrayList<Integer> clone = (ArrayList<Integer>) ints.clone();
-//                    clone.add(i, getHash(wordDict.get(i)));
-//                    if (dp(p + 1, clone)) {
-//                        return true;
-//                    }
-//                }
-//                return false;
-//            }
-//        }
-//
-//        boolean dp2(int p, boolean[] ) {
-//            if (p == wordDict.size()) {
-//                //TODO: get hash based on position
-//                int hash = ints.get(0);
-//                int length =
-//                for (int i = 0; i <)
-//                    if () {
-//                        return true;
-//                    } else {
-//                        return false;
-//                    }
-//            } else {
-//                for (int i = 0; i <= ints.size(); i++) {
-//                    ArrayList<Integer> clone = (ArrayList<Integer>) ints.clone();
-//                    clone.add(i, getHash(wordDict.get(i)));
-//                    if (dp(p + 1, clone)) {
-//                        return true;
-//                    }
-//                }
-//                return false;
-//            }
-//        }
-
-        public boolean wordBreak(String s, ArrayList<String> dict) {
-
-            boolean[] f = new boolean[s.length() + 1];
-
-            f[0] = true;
-
-
-        /* First DP
-        for(int i = 1; i <= s.length(); i++){
-            for(String str: dict){
-                if(str.length() <= i){
-                    if(f[i - str.length()]){
-                        if(s.substring(i-str.length(), i).equals(str)){
-                            f[i] = true;
-                            break;
-                        }
+    static class Solution {
+        public int[] findOrder(int numCourses, int[][] prerequisites) {
+            boolean[][] edges = new boolean[numCourses][numCourses];
+            for (int i = 0; i < prerequisites.length; i++) {
+                edges[prerequisites[i][1]][prerequisites[i][0]] = true;
+            }
+            HashMap<Integer, ArrayList<Integer>> map = new HashMap();
+            boolean[] visited = new boolean[numCourses];
+            ArrayList<Integer> root = new ArrayList();
+            for (int i = 0; i < numCourses; i++) {
+                ArrayList<Integer> parents = new ArrayList();
+                for (int k = 0; k < numCourses; k++) {
+                    if (edges[k][i]) {
+                        parents.add(k);
                     }
                 }
+                if (parents.size() == 0) {
+                    root.add(i);
+                }
+                map.put(i, parents);
             }
-        }*/
-
-            //Second DP
-            for(int i=1; i <= s.length(); i++){
-                for(int j=0; j < i; j++){
-                    if(f[j] && dict.contains(s.substring(j, i))){
-                        f[i] = true;
+            Queue<Integer> stack = new LinkedList<>();
+            if (root.size() == 0) {
+                return new int[0];
+            }
+            for (Integer i : root) {
+                stack.add(i);
+            }
+            int[] ans = new int[numCourses];
+            int i = 0;
+            int count = 0;
+            while (!stack.isEmpty()) {
+                int cur = stack.remove();
+                boolean req = true;
+                for (int p : map.get(cur)) {
+                    if (!visited[p]) {
+                        req = false;
                         break;
                     }
                 }
+                if (!req) {
+                    if (count > stack.size())
+                        return new int[0];
+                    count ++;
+                    if (stack.isEmpty())
+                        return new int[0];
+                    stack.add(cur);
+                } else {
+                    count = 0;
+                    visited[cur] = true;
+                    for (int n = 0; n < numCourses; n++) {
+                        if (edges[cur][n]) {
+                            if (visited[n])
+                                return new int[0];
+                            if (!stack.contains(n))
+                            stack.add(n);
+                        }
+                    }
+                    ans[i] = cur;
+                    i++;
+                }
             }
-
-            return f[s.length()];
+            for (boolean b : visited)
+                if (!b)
+                    return new int[0];
+            return ans;
         }
     }
 
-//        public int getHash(String s) {
-//            int hash = 7;
-//            char[] chars = s.toCharArray();
-//            for (int i = 0; i < s.length(); i++) {
-//                hash += Math.pow(2, i) * (chars[i] - 96);
-//                hash %= MOD;
-//            }
-//            return hash;
-//        }
 
     public static void main(String[] args) {
         Solution s = new Solution();
-        ArrayList<String> strings = new ArrayList<>();
-        strings.add("jk");
-        strings.add("a");
-        strings.add("bcd");
-        s.wordBreak("abcdjk" , strings);
+        int[][] a = {{1, 0}, {2, 1}, {3, 2}, {1, 3}};
+        s.findOrder(4, a);
+        System.out.println();
     }
 }
+
